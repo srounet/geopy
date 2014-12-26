@@ -75,7 +75,7 @@ from math import atan, tan, sin, cos, pi, sqrt, atan2, asin
 from geopy.units import radians
 from geopy import units, util
 from geopy.point import Point
-from geopy.compat import string_compare
+from geopy.compat import string_compare, py3k
 
 # Average great-circle radius in kilometers, from Wikipedia.
 # Using a sphere with this radius results in an error of up to about 0.5%.
@@ -162,11 +162,14 @@ class Distance(object):
     def __str__(self): # pragma: no cover
         return '%s km' % self.__kilometers
 
-    def __cmp__(self, other):
+    def __lt__(self, other):
         if isinstance(other, Distance):
-            return cmp(self.kilometers, other.kilometers)
+            return self.kilometers < other.kilometers
         else:
-            return cmp(self.kilometers, other)
+            return self.kilometers < other
+
+    if not py3k:
+        __cmp__ = __lt__
 
     @property
     def kilometers(self): # pylint: disable=C0111

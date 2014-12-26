@@ -70,7 +70,7 @@ def createPid(pidPath='/var/run'):
 
     currentPid = os.getpid() # Gets PID number
     if not currentPid:
-        print 'Could not find PID'
+        print('Could not find PID')
         sys.exit()
 
     scriptFilename, _ = os.path.splitext(os.path.basename(sys.argv[0]))
@@ -85,5 +85,5 @@ def createPid(pidPath='/var/run'):
 if __name__ == "__main__":
     while True:
         daemonize()
-        print "hello world"
+        print("hello world")
 

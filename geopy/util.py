@@ -5,14 +5,14 @@ Utils.
 import logging
 from geopy.compat import py3k
 
-if not py3k: # pragma: no cover
-    NUMBER_TYPES = (int, long, float)
+if not py3k:  # pragma: no cover
+    NUMBER_TYPES = (int, long, float)  # pylint: disable=E0602
 else: # pragma: no cover
-    NUMBER_TYPES = (int, float) # long -> int in Py3k
+    NUMBER_TYPES = (int, float)  # long -> int in Py3k
 try:
     from decimal import Decimal
     NUMBER_TYPES = NUMBER_TYPES + (Decimal, )
-except ImportError: # pragma: no cover
+except ImportError:  # pragma: no cover
     pass
 
 
@@ -24,7 +24,7 @@ class NullHandler(logging.Handler):
     def emit(self, record):
         pass
 
-logger = logging.getLogger('geopy') # pylint: disable=C0103
+logger = logging.getLogger('geopy')  # pylint: disable=C0103
 logger.setLevel(logging.CRITICAL)
 
 
@@ -41,7 +41,9 @@ if not py3k:
         """
         Join with a filter.
         """
-        return sep.join([unicode(i) for i in seq if pred(i)])
+        return sep.join(
+            [unicode(i) for i in seq if pred(i)]  # pylint: disable=E0602
+        )
 else:
     def join_filter(sep, seq, pred=bool):
         """
@@ -61,10 +63,16 @@ if not py3k:
         if hasattr(page, 'read'): # urllib
             # note getparam in py2
             encoding = page.headers.getparam("charset") or "utf-8"
-            return unicode(page.read(), encoding=encoding)
+            return unicode(  # pylint: disable=E0602
+                page.read(),
+                encoding=encoding
+            )
         else: # requests?
             encoding = page.headers.get("charset", "utf-8")
-            return unicode(page.content, encoding=encoding)
+            return unicode(  # pylint: disable=E0602
+                page.content,
+                encoding=encoding
+            )
 else:
     def decode_page(page):
         """

@@ -9,7 +9,7 @@ py3k = sys.version_info >= (3, 0)
 if py3k: # pragma: no cover
     string_compare = str
 else: # pragma: no cover
-    string_compare = (str, unicode)
+    string_compare = (str, unicode)  # pylint: disable=E0602
 
 # Unicode compatibility, borrowed from 'six'
 if py3k: # pragma: no cover
@@ -23,7 +23,10 @@ else: # pragma: no cover
         """
         Convert to Unicode with unicode escaping
         """
-        return unicode(s.replace(r'\\', r'\\\\'), 'unicode_escape')
+        return unicode(  # pylint: disable=E0602
+            s.replace(r'\\', r'\\\\'),
+            'unicode_escape'
+        )
 
 if py3k: # pragma: no cover
     from urllib.parse import urlencode, quote # pylint: disable=W0611,F0401,W0611,E0611
@@ -41,7 +44,7 @@ else: # pragma: no cover
         """
         Python2-only, ensures that a string is encoding to a str.
         """
-        if isinstance(str_or_unicode, unicode):
+        if isinstance(str_or_unicode, unicode):  # pylint: disable=E0602
             return str_or_unicode.encode('utf-8')
         else:
             return str_or_unicode

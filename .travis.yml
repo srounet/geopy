@@ -6,6 +6,7 @@ python:
     - "pypy"
     - "pypy3"
 script:
-    - pip install nose-cov requests-oauthlib pytz
+    - pip install nose-cov requests-oauthlib pytz pylint
+    - make lint
     - make test
 sudo: false

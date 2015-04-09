@@ -13,6 +13,8 @@ from geopy.compat import urlencode
 from geopy.location import Location
 from geopy.util import logger
 
+import urlparse
+
 __all__ = ("MA", )
 
 
@@ -22,6 +24,7 @@ class MA(Geocoder):
         'types',
         'q'
     }
+
     def __init__(self, api, format_string=DEFAULT_FORMAT_STRING, timeout=DEFAULT_TIMEOUT, proxies=None): # pylint: disable=R0913
         super(MA, self).__init__(
             format_string, 'http', timeout, proxies
@@ -31,11 +34,7 @@ class MA(Geocoder):
 
 
     def geocode(self, query, exactly_one=True, timeout=None):  # pylint: disable=R0913,W0221
-        params = {
-            'q': self.format_string % query,
-            'types': 'addresses'
-        }
-        url = "?".join((self.api, urlencode(params)))
+        url = '{}?{}'.format(self.api, query)
         logger.debug("%s.geocode: %s", self.__class__.__name__, url)
         return self._parse_json(
             self._call_geocoder(url, timeout=timeout), exactly_one
@@ -61,7 +60,9 @@ class MA(Geocoder):
         if place is None or not place.get('response'):
             return
         places = place['response']['places']
+        if not places:
+            return {}
         if exactly_one is True:
-            return self.parse_code(places[0])
+            return places[0]
         else:
-            return[self.parse_code(p) for p in places]
+            return places

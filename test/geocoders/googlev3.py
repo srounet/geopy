@@ -17,6 +17,12 @@ class GoogleV3TestCase(GeocoderTestBase): # pylint: disable=R0904,C0111
         cls.new_york_point = Point(40.75376406311989, -73.98489005863667)
         cls.america_new_york = timezone("America/New_York")
 
+    def test_user_agent_custom(self):
+        geocoder = GoogleV3(
+            user_agent='my_user_agent/1.0'
+        )
+        self.assertEqual(geocoder.headers['User-Agent'], 'my_user_agent/1.0')
+
     def test_configuration_error(self):
         """
         GoogleV3 raises configuration errors on invalid auth params
@@ -202,3 +208,21 @@ class GoogleV3TestCase(GeocoderTestBase): # pylint: disable=R0904,C0111
         with self.assertRaises(exc.GeocoderQueryError):
             self.geocoder.timezone(self.new_york_point, "eek")
 
+    def test_geocode_bounds(self):
+        """
+        GoogleV3.geocode check bounds restriction
+        """
+        self.geocode_run(
+            {"query": "221b Baker St", "bounds": [50, -2, 55, 2]},
+            {"latitude": 51.52, "longitude": -0.15},
+        )
+
+    def test_geocode_bounds_invalid(self):
+        """
+        GoogleV3.geocode bounds must be 4-length iterable
+        """
+        with self.assertRaises(exc.GeocoderQueryError):
+            self.geocode_run(
+                {"query": "221b Baker St", "bounds": [50, -2, 55]},
+                {"latitude": 51.52, "longitude": -0.15},
+            )

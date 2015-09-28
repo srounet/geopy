@@ -76,12 +76,12 @@ __all__ = (
     "ArcGIS",
     "Baidu",
     "Bing",
+    "DataBC",
     "GeocoderDotUS",
     "GeocodeFarm",
     "GeoNames",
     "GoogleV3",
     "IGNFrance",
-    "MapQuest",
     "OpenCage",
     "OpenMapQuest",
     "NaviData",
@@ -90,17 +90,18 @@ __all__ = (
     "LiveAddress",
     'Yandex',
     "What3Words",
+    "Photon",
 )
 
 
 from geopy.geocoders.arcgis import ArcGIS
 from geopy.geocoders.baidu import Baidu
 from geopy.geocoders.bing import Bing
+from geopy.geocoders.databc import DataBC
 from geopy.geocoders.dot_us import GeocoderDotUS
 from geopy.geocoders.geocodefarm import GeocodeFarm
 from geopy.geocoders.geonames import GeoNames
 from geopy.geocoders.googlev3 import GoogleV3
-from geopy.geocoders.mapquest import MapQuest
 from geopy.geocoders.opencage import OpenCage
 from geopy.geocoders.openmapquest import OpenMapQuest
 from geopy.geocoders.navidata import NaviData
@@ -110,6 +111,7 @@ from geopy.geocoders.smartystreets import LiveAddress
 from geopy.geocoders.what3words import What3Words
 from geopy.geocoders.yandex import Yandex
 from geopy.geocoders.ignfrance import IGNFrance
+from geopy.geocoders.photon import Photon
 
 
 from geopy.exc import GeocoderNotFound
@@ -118,6 +120,8 @@ from geopy.exc import GeocoderNotFound
 SERVICE_TO_GEOCODER = {
     "arcgis": ArcGIS,
     "baidu": Baidu,
+    "bing": Bing,
+    "databc": DataBC,
     "google": GoogleV3,
     "googlev3": GoogleV3,
     "geocoderdotus": GeocoderDotUS,
@@ -126,7 +130,6 @@ SERVICE_TO_GEOCODER = {
     "placefinder": YahooPlaceFinder,
     "opencage": OpenCage,
     "openmapquest": OpenMapQuest,
-    "mapquest": MapQuest,
     "liveaddress": LiveAddress,
     "navidata": NaviData,
     "nominatim": Nominatim,
@@ -134,6 +137,7 @@ SERVICE_TO_GEOCODER = {
     "what3words": What3Words,
     "yandex": Yandex,
     "ignfrance": IGNFrance,
+    "photon": Photon
 }
 
 

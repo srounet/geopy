@@ -2,8 +2,10 @@
 :class:`.YahooPlaceFinder` geocoder.
 """
 
+from functools import partial
+
 try:
-    from requests import get
+    from requests import get, Request
     from requests_oauthlib import OAuth1
     requests_missing = False
 except ImportError:
@@ -29,7 +31,8 @@ class YahooPlaceFinder(Geocoder): # pylint: disable=W0223
             consumer_key,
             consumer_secret,
             timeout=DEFAULT_TIMEOUT,
-            proxies=None
+            proxies=None,
+            user_agent=None,
         ):  # pylint: disable=R0913
         """
         :param string consumer_key: Key provided by Yahoo.
@@ -54,7 +57,7 @@ class YahooPlaceFinder(Geocoder): # pylint: disable=W0223
                 ' Install with `pip install geopy -e ".[placefinder]"`.'
             )
         super(YahooPlaceFinder, self).__init__(
-            timeout=timeout, proxies=proxies
+            timeout=timeout, proxies=proxies, user_agent=user_agent
         )
         self.consumer_key = (
             unicode(consumer_key)
@@ -138,6 +141,7 @@ class YahooPlaceFinder(Geocoder): # pylint: disable=W0223
             min_quality=0,
             reverse=False,
             valid_country_codes=None,
+            with_timezone=False,
         ):  # pylint: disable=W0221,R0913
         """
         Geocode a location query.
@@ -153,6 +157,9 @@ class YahooPlaceFinder(Geocoder): # pylint: disable=W0223
 
         :param valid_country_codes:
         :type valid_country_codes: list or tuple
+
+        :param bool with_timezone: Include the timezone in the response's
+            `raw` dictionary (as `timezone`).
         """
         params = {
             "location": query,
@@ -163,6 +170,8 @@ class YahooPlaceFinder(Geocoder): # pylint: disable=W0223
             params["gflags"] = "R"
         if exactly_one is True:
             params["count"] = "1"
+        if with_timezone is True:
+            params['flags'] += 'T' #Return timezone
 
         response = self._call_geocoder(
             self.api,

@@ -12,7 +12,7 @@ geopy includes geocoder classes for the [OpenStreetMap Nominatim][osm],
 [ESRI ArcGIS][arcgis], [Google Geocoding API (V3)][googlev3],
 [Baidu Maps][baidu], [Bing Maps API][bing], [Yahoo! PlaceFinder][placefinder],
 [Yandex][yandex], [IGN France][ignfrance], [GeoNames][geonames],
-[MapQuest][mapquest], [NaviData][navidata], [OpenMapQuest][openmapquest], [What3Words][what3words],
+[NaviData][navidata], [OpenMapQuest][openmapquest], [What3Words][what3words],
 [OpenCage][opencage], [SmartyStreets][smartystreets], [geocoder.us][dot_us],
 and [GeocodeFarm][geocodefarm] geocoder services.
 The various geocoder classes are located in [geopy.geocoders][geocoders_src].
@@ -36,9 +36,10 @@ The various geocoder classes are located in [geopy.geocoders][geocoders_src].
 [yandex]: http://api.yandex.com/maps/doc/intro/concepts/intro.xml
 [geocoders_src]: https://github.com/geopy/geopy/tree/master/geopy/geocoders
 
-geopy is tested against CPython 2.7, CPython 3.2, CPython 3.4, PyPy, and PyPy3.
+geopy is tested against CPython 2.7, CPython 3.2, CPython 3.4, PyPy, and
+PyPy3. geopy does not and will not support CPython 2.6.
 
-© GeoPy Project and individual contributors under the
+© geopy contributors 2006-2015 (see AUTHORS) under the
 [MIT License](https://github.com/geopy/geopy/blob/master/LICENSE).
 
 ## Installation

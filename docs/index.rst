@@ -21,6 +21,9 @@ Geocoders
 .. autoclass:: geopy.geocoders.Bing
     :members: __init__, geocode, reverse
 
+.. autoclass:: geopy.geocoders.DataBC
+    :members: __init__, geocode
+
 .. autoclass:: geopy.geocoders.GeocodeFarm
     :members: __init__, geocode, reverse
 
@@ -52,6 +55,9 @@ Geocoders
     :members: __init__, geocode, reverse
 
 .. autoclass:: geopy.geocoders.OpenMapQuest
+    :members: __init__, geocode
+
+.. autoclass:: geopy.geocoders.Photon
     :members: __init__, geocode
 
 .. autoclass:: geopy.geocoders.YahooPlaceFinder

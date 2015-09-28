@@ -5,13 +5,26 @@ from geopy.exc import ConfigurationError, GeocoderQueryError
 from geopy.geocoders import IGNFrance
 from test.geocoders.util import GeocoderTestBase, env
 
-
-@unittest.skipUnless(  # pylint: disable=R0904,C0111
-    bool((env.get('IGNFRANCE_KEY') and
+credentials = bool((env.get('IGNFRANCE_KEY') and
           env.get('IGNFRANCE_USERNAME') and
           env.get('IGNFRANCE_PASSWORD')) or
          (env.get('IGNFRANCE_KEY') and
-          env.get('IGNFRANCE_REFERER'))),
+          env.get('IGNFRANCE_REFERER')))
+
+
+class IGNFranceTestCaseUnitTest(GeocoderTestBase):
+
+    def test_user_agent_custom(self):
+        geocoder = IGNFrance(
+            api_key='DUMMYKEY1234',
+            username='MUSTERMANN',
+            password='tops3cr3t',
+            user_agent='my_user_agent/1.0'
+        )
+        self.assertEqual(geocoder.headers['User-Agent'], 'my_user_agent/1.0')
+
+@unittest.skipUnless(  # pylint: disable=R0904,C0111
+    credentials,
     "One or more of the env variables IGNFRANCE_KEY, IGNFRANCE_USERNAME \
     and IGNFRANCE_PASSWORD is not set"
 )
@@ -19,6 +32,8 @@ class IGNFranceTestCase(GeocoderTestBase):
 
     @classmethod
     def setUpClass(cls):
+        if not credentials:
+            return
         cls.geocoder = IGNFrance(
             api_key=env.get('IGNFRANCE_KEY'),
             username=env.get('IGNFRANCE_USERNAME'),

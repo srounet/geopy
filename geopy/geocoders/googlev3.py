@@ -44,7 +44,8 @@ class GoogleV3(Geocoder):  # pylint: disable=R0902
             client_id=None,
             secret_key=None,
             timeout=DEFAULT_TIMEOUT,
-            proxies=None
+            proxies=None,
+            user_agent=None,
         ):  # pylint: disable=R0913
         """
         Initialize a customized Google geocoder.
@@ -58,7 +59,7 @@ class GoogleV3(Geocoder):  # pylint: disable=R0902
             .. versionadded:: 0.98.2
 
         :param string domain: Should be the localized Google Maps domain to
-            connect to. The default is 'maps.google.com', but if you're
+            connect to. The default is 'maps.googleapis.com', but if you're
             geocoding address in the UK (for example), you may want to set it
             to 'maps.google.co.uk' to properly bias results.
 
@@ -80,7 +81,7 @@ class GoogleV3(Geocoder):  # pylint: disable=R0902
             .. versionadded:: 0.96
         """
         super(GoogleV3, self).__init__(
-            scheme=scheme, timeout=timeout, proxies=proxies
+            scheme=scheme, timeout=timeout, proxies=proxies, user_agent=user_agent
         )
         if client_id and not secret_key:
             raise ConfigurationError('Must provide secret_key with client_id.')
@@ -137,6 +138,13 @@ class GoogleV3(Geocoder):  # pylint: disable=R0902
             )
         )
 
+    @staticmethod
+    def _format_bounds_param(bounds):
+      """
+      Format the bounds to something Google understands.
+      """
+      return '%f,%f|%f,%f' % (bounds[0], bounds[1], bounds[2], bounds[3])
+
     def geocode(
             self,
             query,
@@ -187,7 +195,11 @@ class GoogleV3(Geocoder):  # pylint: disable=R0902
         if self.api_key:
             params['key'] = self.api_key
         if bounds:
-            params['bounds'] = bounds
+            if len(bounds) != 4:
+                raise GeocoderQueryError(
+                    "bounds must be a four-item iterable of lat,lon,lat,lon"
+                )
+            params['bounds'] = self._format_bounds_param(bounds)
         if region:
             params['region'] = region
         if components:
